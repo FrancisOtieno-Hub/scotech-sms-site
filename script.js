@@ -1,0 +1,36 @@
+// Points the download buttons at the newest installer on GitHub Releases.
+//
+// Where installers live: like ScoTech Writer, the installer is attached to a Release of a PUBLIC repository
+// (the source repo, scotech-sms, is private, so its releases are not publicly downloadable).
+// Change REPO below if the public releases repository has a different name.
+//
+// Until a release exists (or if GitHub cannot be reached) the buttons keep their default, which is an email asking
+// ScoTech for the installer, so the page never shows a broken link.
+(function () {
+  var REPO = "FrancisOtieno-Hub/scotech-sms-site";
+  var yr = document.getElementById("yr");
+  if (yr) yr.textContent = new Date().getFullYear();
+
+  fetch("https://api.github.com/repos/" + REPO + "/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (rel) {
+      // The installer is named ScoTechSMS-Setup-<version>.exe
+      var a = (rel.assets || []).filter(function (x) { return /Setup.*\.exe$/i.test(x.name); })[0];
+      if (!a) return;
+      var ver = (rel.tag_name || "").replace(/^v/, "");
+      var mb = (a.size / 1048576).toFixed(1);
+      ["dl-main", "dl-btn"].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.href = a.browser_download_url;
+        el.textContent = "Download for Windows" + (ver ? " (v" + ver + ")" : "");
+      });
+      document.getElementById("dl-meta").textContent = "Version " + ver + " · " + mb + " MB · Windows 10 or 11 · 30-day free trial";
+      document.getElementById("dl-info").textContent = "Version " + ver + " · " + mb + " MB · Windows 10 or 11, 64-bit";
+      if (a.digest && /^sha256:/.test(a.digest)) {
+        document.getElementById("sha").textContent = a.digest.slice(7);
+        document.getElementById("sha-line").hidden = false;
+      }
+    })
+    .catch(function () {});
+})();
