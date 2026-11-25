@@ -4,8 +4,7 @@
 // (the source repo, scotech-sms, is private, so its releases are not publicly downloadable).
 // Change REPO below if the public releases repository has a different name.
 //
-// Until a release exists (or if GitHub cannot be reached) the buttons keep their default, which is an email asking
-// ScoTech for the installer, so the page never shows a broken link.
+// Without JavaScript (or if GitHub is unreachable) the buttons open the Releases page, which still works.
 (function () {
   var REPO = "FrancisOtieno-Hub/scotech-sms-site";
   var yr = document.getElementById("yr");

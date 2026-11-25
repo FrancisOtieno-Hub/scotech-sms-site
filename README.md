@@ -8,4 +8,4 @@ The source code lives in the private `scotech-sms` repository.
 2. Here: **Releases → Draft a new release**, tag `v<version>`, attach the `.exe`, **Publish**.
 3. The page picks it up automatically (the file name must contain `Setup` and end in `.exe`). GitHub shows the SHA-256 and the page prints it.
 
-Until a release exists, the Download buttons open an email asking ScoTech for the installer.
+Before JavaScript runs (or if GitHub is unreachable) the Download buttons open the Releases page.
